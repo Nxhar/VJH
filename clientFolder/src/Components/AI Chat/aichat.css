@@ -1,0 +1,136 @@
+:root {
+    --primary-color: #9b51e0;
+    --backgroundColor: #fff;
+    --hover-color: #a567df;
+}
+
+.chatContainer{
+    flex:0.79;
+    display: flex;
+    flex-direction: column;
+    width: 1152px;
+    min-height: 90vh;
+
+    background-color: var(--backgroundColor);
+    margin-left: 20px;
+    margin-top: 20px;
+    
+    border-radius: 20px;
+}
+
+
+
+/* Coding the bottom Text Box */
+.textContainer{
+    margin-top: auto;
+    padding: 20px 30px;
+    background-color: var(--primary-color);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    
+}
+
+.textBox{
+    font-family: 'Poppins';
+}
+.inputBox{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 3px 20px;
+    border-radius: 10px;
+}
+
+ .textBox{
+    border-radius: 10px;
+    height: 30px;
+    width: 100%;
+    background-color: #fff;
+    padding: 4px 12px;
+    border: 1px solid #fff;
+    font-family: 'Poppins';
+    font-size: 1.2em;
+}
+
+ .textBox:focus{
+    border: 1px solid #fff;
+    /* background-color: #ececec; */
+    outline: none;
+}
+
+.bottomLayer .btn{
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.imageContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: #9b51e0;
+    font-family: 'Poppins';
+    font-size: 30px;
+    margin-top: -50px;
+    font-weight: 600;
+}
+
+.imageContainer img{
+    height: 120px; 
+    width: 120px;
+}
+
+.mainContainer { 
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    font-weight: 400;
+}
+
+.labelFor{
+    padding: 10px 20px;
+    background-color: #9b51e0;
+    color: white;
+    font-family: 'Poppins';
+    cursor: pointer;
+}
+
+.mainContainer .sendbtn{ 
+    cursor: pointer;
+    background-color: #9b51e0;
+    padding: 10px 20px;
+    font-family: 'Poppins';
+    color: white;
+}
+
+.mainContainer .sendbtn:hover{
+    background-color: var(--hover-color);
+    transition: 0.2s ease;
+}
+
+
+.Message{
+    padding: 20px 20px;
+    display: flex;
+    /* align-items: center; */
+    margin: 0;
+    font-family: 'Poppins';
+    font-size: 18px;
+    border-top: 1px solid #fff;
+}
+
+
+
+.Message .chat-user-icon{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+
+

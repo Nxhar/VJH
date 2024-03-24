@@ -1,0 +1,13 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins';
+}
+
+body{
+  background-color:#ecf7fd;
+}
+
+.flexMain{
+  display: flex;
+}

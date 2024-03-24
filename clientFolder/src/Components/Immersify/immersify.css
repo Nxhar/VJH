@@ -1,0 +1,91 @@
+:root{
+    --primary-color: #9b51e0;
+    --backgroundColor: #fff;
+    --hover-color: #a567df;
+}
+
+.rightPane{
+    flex:0.79;
+    display: flex;
+    flex-direction: column;
+    width: 1152px;
+    min-height: 90vh;
+    padding: 20px 20px;
+    align-items: center;
+
+    background-color: var(--primary-color);
+    color: var(--backgroundColor);
+    margin-left: 20px;
+    margin-top: 20px;    
+    border-radius: 20px;
+
+}
+
+.immText{
+    font-size: 20px;
+}
+
+.immCard{
+    color: white;
+    text-decoration: none;
+    
+    background-color: #fff;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.iframeEmbed { 
+    width: 1000px;
+    height: 600px;
+}
+
+.fetchScore{
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.fetchScore:hover{
+    background-color: var(--hover-color);
+    transition: 0.2s ease;
+    
+}
+
+
+.rightPane .top .echotitle{
+    font-size: 60px;
+    text-align: center;
+
+}
+
+.flexSpeak{
+    margin-top: 60px;
+    font-size: 24px;
+    display: flex;
+    font-weight: 500;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rightPane .top .echodesc{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.centralize{
+    padding-top: 120px;
+    height: 70vh;
+
+}
