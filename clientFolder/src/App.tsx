@@ -11,6 +11,7 @@ import Assessments from './Components/Courses/Assessments';
 import Assessment from './Components/Courses/Assessment/Assessment';
 import Immersify from './Components/Immersify/Immersify';
 import Graphic from './Components/Immersify/Graphic'
+import Result from './Components/Courses/Result'
 import MistralSpeak from './Components/Echo/MistralSpeak';
 
 function App() {
@@ -57,15 +58,17 @@ function App() {
             {/* If comm forum is active link, display mid and right panes */}
             <Route path="/discussions" element={<CommunityPane user={user} />} />
             <Route path='/discussions/:id' element={<Post user={user}/>} />
-            <Route path="/aichat" element={<AIChat user={user} />} />
+            {/* <Route path="/aichat" element={<AIChat user={user} />} /> */}
             <Route path='/assessments' element={<Assessments user={user} /> } />
             <Route path='/assessments/:id' element={<Assessment user={user} /> } />
             <Route path='/immersify' element={<Immersify user={user} />} />
             <Route path='/immersify/:id' element={<Graphic />} />
-
-          </Routes>
+            <Route path='/results' element={<Result />} />
+           </Routes>
         </div>
       )}
+
+      {/* {console.log(user?.photoURL)} */}
     </div>
   );
 }

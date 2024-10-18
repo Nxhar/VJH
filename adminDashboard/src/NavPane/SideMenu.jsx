@@ -18,7 +18,7 @@ function SideMenu({ user }) {
 
   return (
     <div className="sidebar">
-      <div style={{width:'200px'}} className="title">WizLearn Dashboard</div>
+      <div style={{width:'200px'}} className="title">Gyaanavapi <br/> Dashboard</div>
 
       <NavLink
         to="/"

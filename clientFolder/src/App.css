@@ -11,3 +11,81 @@ body{
 .flexMain{
   display: flex;
 }
+
+.resultsContainer {
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.questionResult {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #9b51e0;
+  color: white;
+  text-align: center;
+  /* width: fit-content; */
+  padding: 20px 30px;
+  border-radius: 20px;
+}
+
+.questionText {
+  font-weight: bold;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+}
+
+.correct {
+  background-color: #c8e6c9; /* Light green for correct answers */
+}
+
+.incorrect {
+  background-color: #ffcdd2; /* Light red for incorrect answers */
+}
+
+.resultsContainer h3{
+  margin-top: 10px;
+  text-align: center;
+  font-size: 25px;
+  margin-bottom: 40px;
+  
+}
+
+.resultsContainer h3 strong, .resultsContainer p strong{
+  background-color: #9b51e0;
+  color: white; 
+  padding-left: 10px; 
+  padding-right: 10px;
+  border-radius: 10px;
+  margin-left: 0;
+}
+
+.resultsContainer h2{
+  text-align: center;
+  margin-top: 20px;
+  font-size: 30px;
+}
+
+.resultsContainer p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.userScore{
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}

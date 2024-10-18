@@ -13,7 +13,7 @@ function RightPane({user, context}: { user: User | null, context: string }) {
   const [messages, setMessages] = useState([
     {
       'type' : 'aiMessage',
-      'content': "Hi! I'm Mistral, an AI assistant to help your needs. You can ask me anything you like!"
+      'content': "Hi! I'm Gyaanvapi, an AI assistant to help your needs. You can ask me anything you like!"
     }
   ])
  
@@ -97,7 +97,7 @@ function RightPane({user, context}: { user: User | null, context: string }) {
     setLoadingResponse(true)
 
     const prompt_template = `
-      You are an AI assistant that truthfully answers queries in 100 words.
+      You are Gyaanvapi, an AI assistant that truthfully answers queries in 100 words.
       You must end each answer with the characters </end> 
       Question : ${message}
       Answer : 
@@ -129,7 +129,7 @@ function RightPane({user, context}: { user: User | null, context: string }) {
     console.log(context)
     
     const prompt_template = `
-       You are an AI assistant that speaks about a certain discussion and answers the queries in the discussion if any in 100 words.
+       You are Gyaanvapi, an AI assistant that speaks about a certain discussion and answers the queries in the discussion if any in 100 words.
        You must end each answer with the characters </end> 
        Discussion : ${context}
        Answer:
@@ -157,7 +157,7 @@ function RightPane({user, context}: { user: User | null, context: string }) {
     <>
     <div className="outerRightLayer">
       <div className="title">
-        <h2>Chat with Mistral</h2>
+        <h2>Chat with Gyaanvapi   </h2>
       </div>
       <div className="Messages" id='Messages'>
 

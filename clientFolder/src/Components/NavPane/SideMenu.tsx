@@ -1,8 +1,8 @@
 import './sidebar.css';
-import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
+// import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 import MessageIcon from '@mui/icons-material/Message';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
+// import SmartToyIcon from '@mui/icons-material/SmartToy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import VrpanoIcon from '@mui/icons-material/Vrpano';
 import { NavLink } from 'react-router-dom';
@@ -27,9 +27,9 @@ function SideMenu({ user }: SideMenuProps): JSX.Element {
 
   return (
     <div className="sidebar">
-      <div className="title">WizLearn</div>
+      <div className="title">Gyaanavapi</div>
 
-      <NavLink
+      {/* <NavLink
         to="/"
         className={({ isActive, isPending }) =>
           isPending ? 'pending' : isActive ? 'activeLink option' : 'option'
@@ -37,7 +37,7 @@ function SideMenu({ user }: SideMenuProps): JSX.Element {
       >
         <KeyboardVoiceIcon />
         MistralEcho
-      </NavLink>
+      </NavLink> */}
 
       <NavLink
         to="/discussions"
@@ -59,7 +59,7 @@ function SideMenu({ user }: SideMenuProps): JSX.Element {
         Assessments
       </NavLink>
 
-      <NavLink
+      {/* <NavLink
         to="/aichat"
         className={({ isActive, isPending }) =>
           isPending ? 'pending' : isActive ? 'activeLink option' : 'option'
@@ -67,7 +67,7 @@ function SideMenu({ user }: SideMenuProps): JSX.Element {
       >
         <SmartToyIcon />
         DocMistral
-      </NavLink>
+      </NavLink> */}
 
       <NavLink
         to="/immersify"
@@ -85,7 +85,7 @@ function SideMenu({ user }: SideMenuProps): JSX.Element {
       </div>
 
       <div className="profile">
-        <img className="profile-iconHere" src={userIcon} alt="" />
+        <img className="profile-iconHere" src={user.photoURL} alt="" />
         <div className="textIn">
           <div className="name">{user.displayName}</div>
           <div className="email">{user.email}</div>

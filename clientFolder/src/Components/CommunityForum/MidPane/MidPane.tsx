@@ -63,7 +63,7 @@ function MidPane(): JSX.Element {
                 <h2>{post.title}</h2>
                 <div className='askedBy'>
                   Shared by : {post.creator}
-                  <div className='timestamp'>{new Date(post.timestamp.seconds * 1000).toLocaleString()}</div>
+                  <div className='timestamp'>{new Date((post.timestamp.seconds || 0) * 1000).toLocaleString()}</div>
                 </div>
               </div>
               {post.imageUrl && <img src={post.imageUrl} className='imageUrl' alt=' ' />}

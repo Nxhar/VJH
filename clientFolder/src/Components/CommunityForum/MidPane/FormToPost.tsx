@@ -4,8 +4,8 @@ import ImageIcon from '@mui/icons-material/Image';
 import { useState } from 'react';
 import { serverTimestamp, FieldValue, addDoc, collection } from 'firebase/firestore';
 import { db, storage } from '../../../_Firebase/firebaseConfig';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import {v4} from 'uuid'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
 
 // Define your Post type as needed
 interface Post {
@@ -15,21 +15,20 @@ interface Post {
   title: string;
   description: string;
   imageUrl: string;
-  timestamp:FieldValue;
+  timestamp: FieldValue;
 }
 
 interface UserProps {
- 
-    uid: string;
-    displayName: string;
-    photoURL: string;
- 
+  uid: string;
+  displayName: string;
+  photoURL: string;
 }
 
 function FormToPost({ user }: UserProps): JSX.Element {
   const userIcon = user.photoURL;
 
   const [modal, setModal] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]); // Added state for posts
 
   const toggleModal = () => {
     setModal(!modal);
@@ -64,39 +63,35 @@ function Modal({ toggleModal, user, posts, setPosts }: ModalProps): JSX.Element 
   const [postTitle, setPostTitle] = useState('');
   const [postDesc, setPostDesc] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  
 
-  const uploadImage = async (file:File) => {
-    if(file){
-    try {
-      const storageRef = ref(storage, 'images/' + file.name + v4());
-      const snapshot = await uploadBytes(storageRef, file);
-  
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log('Got download url' + downloadURL)
-      
-
-      return downloadURL;
-
-    } catch (error) {
-      console.error('Error uploading file:', error);
+  const uploadImage = async (file: File) => {
+    if (file) {
+      try {
+        const storageRef = ref(storage, 'images/' + file.name + v4());
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        console.log('Got download url' + downloadURL);
+        return downloadURL;
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        return '';
+      }
+    } else {
       return '';
     }
-  } else { return ''; }
-
   };
 
   const handleCreatePost = async () => {
     if (postTitle.trim() === '' || postDesc.trim() === '') {
       return;
     }
-  
+
     let imageURL = '';
-  
+
     if (image) {
       imageURL = await uploadImage(image);
     }
-  
+
     const newPost: Post = {
       uid: user.uid,
       creator: user.displayName,
@@ -106,26 +101,22 @@ function Modal({ toggleModal, user, posts, setPosts }: ModalProps): JSX.Element 
       imageUrl: imageURL,
       timestamp: serverTimestamp(),
     };
-  
+
     setPosts([...posts, newPost]);
-  
+
     try {
-      // LOGIC TO CREATE POST THRU FIREBASE FIRESTORE
+      // LOGIC TO CREATE POST THROUGH FIREBASE FIRESTORE
       const docRef = await addDoc(collection(db, 'posts'), newPost);
-  
       console.log('Document written with ID: ', docRef.id);
     } catch (err) {
       console.error(err);
     }
-  
+
     setPostDesc('');
     setImage(null);
     setPostTitle('');
-    
-  
     toggleModal();
   };
-  
 
   return (
     <>
@@ -167,7 +158,7 @@ function Modal({ toggleModal, user, posts, setPosts }: ModalProps): JSX.Element 
               image.type.startsWith('image/') ? (
                 <img src={URL.createObjectURL(image)} style={{ maxHeight: '150px' }} alt="Selected" />
               ) : (
-                <span style={{ backgroundColor: '#eee', display: 'flex' }}>File : {image.name}</span>
+                <span style={{ backgroundColor: '#eee', display: 'flex' }}>File: {image.name}</span>
               )
             )}
           </div>
