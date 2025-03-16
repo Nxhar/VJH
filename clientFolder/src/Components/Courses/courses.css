@@ -109,3 +109,195 @@
     
     border-radius: 20px;
 }
+
+
+
+
+
+
+
+
+
+/* Assessment.css - include this in your project's CSS */
+.coursesContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+  }
+  
+  .assessment-container {
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .progress-bar {
+    padding: 10px 15px;
+    background-color: #f6f6f6;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .progress-text {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .progress-indicator {
+    height: 6px;
+    background-color: #eaeaea;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .progress-filled {
+    height: 100%;
+    background-color: #4a86e8;
+    transition: width 0.3s ease;
+  }
+  
+  .question-container {
+    padding: 20px;
+  }
+  
+  .question-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .option {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  
+  .option:hover {
+    background-color: #f9f9f9;
+    border-color: #d0d0d0;
+  }
+  
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+  }
+  
+  .option-label input {
+    margin-top: 3px;
+    margin-right: 10px;
+  }
+  
+  .option-text {
+    line-height: 1.4;
+  }
+  
+  .navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+  }
+  
+  .nav-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .prev-button {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .prev-button:hover:not(:disabled) {
+    background-color: #e0e0e0;
+  }
+  
+  .next-button {
+    background-color: #4a86e8;
+    color: white;
+  }
+  
+  .next-button:hover:not(:disabled) {
+    background-color: #3a76d8;
+  }
+  
+  .submit-button {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .submit-button:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  
+  .question-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px;
+    background-color: #f6f6f6;
+  }
+  
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #d0d0d0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .dot.active {
+    background-color: #4a86e8;
+    transform: scale(1.2);
+  }
+  
+  .dot.answered {
+    border: 2px solid #4caf50;
+  }
+  
+  .question-count-control {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .question-count-control select {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #d0d0d0;
+  }
+  
+  .question-count-control small {
+    color: #666;
+    font-style: italic;
+  }

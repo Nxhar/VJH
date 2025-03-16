@@ -1,9 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { solarSystemQuiz } from '../Courses/Assessment/assess.js'; // Import your quiz data
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
@@ -13,10 +11,10 @@ function Results() {
   const [open, setOpen] = useState(false);
 
   if (!newdata) {
-    return <p>No results found.</p>;
+    return <p>No results found. Please complete an assessment first.</p>;
   }
 
-  const { averageScore, scores } = newdata;
+  const { averageScore, questions } = newdata;
   let learnerCategory;
 
   if (averageScore >= 0.8) {
@@ -30,21 +28,18 @@ function Results() {
   // Recommended videos based on learner category
   const recommendedVideos = {
     'Fast Learner': [
-      { title: 'Advanced Concepts in Solar System', url: 'https://www.youtube.com/embed/kBs2-J6k8vM' },
-      { title: 'Exploring Space Beyond Our Solar System', url: 'https://www.youtube.com/embed/zeaFHgsDs1I' },
+      { title: 'Advanced Concepts in ' + newdata.course_name, url: 'https://www.youtube.com/embed/kBs2-J6k8vM' },
+      { title: 'Exploring Beyond Basic ' + newdata.course_name, url: 'https://www.youtube.com/embed/zeaFHgsDs1I' },
     ],
     'Average Learner': [
-      { title: 'Intermediate Guide to Solar System', url: 'https://www.youtube.com/embed/libKVRa01L8' },
-      { title: 'Solar System Basics Reinforced', url: 'https://www.youtube.com/embed/x1QTc5YeO6w' },
+      { title: 'Intermediate Guide to ' + newdata.course_name, url: 'https://www.youtube.com/embed/libKVRa01L8' },
+      { title: newdata.course_name + ' Basics Reinforced', url: 'https://www.youtube.com/embed/x1QTc5YeO6w' },
     ],
     'Slow Learner': [
-      { title: 'Introduction to the Solar System', url: 'https://www.youtube.com/embed/yaPhKc31zPs' },
-      { title: 'Beginner’s Guide to Solar System', url: 'https://www.youtube.com/embed/lcZTcfdZ3Ow' },
+      { title: 'Introduction to ' + newdata.course_name, url: 'https://www.youtube.com/embed/yaPhKc31zPs' },
+      { title: 'Beginner\'s Guide to ' + newdata.course_name, url: 'https://www.youtube.com/embed/lcZTcfdZ3Ow' },
     ],
   };
-
-  // Find the relevant quiz questions from the assess.js data
-  const questions = solarSystemQuiz['Solar System'];
 
   // Modal open/close handlers
   const handleOpen = () => setOpen(true);
@@ -58,11 +53,11 @@ function Results() {
       <p>Total Score: {newdata.totalScore}</p>
       <p>Average Score: {averageScore.toFixed(2)}</p>
       <p>Category: {learnerCategory}</p>
-
+      <p>Questions Answered: {newdata.answeredQuestions} of {newdata.totalQuestions}</p>
 
       <div className="center">
         <button onClick={handleOpen} className='recButton' style={{ fontSize: '18px' }}>
-          Based on your results, Here are some recommendations to improve yourself!
+          Based on your results, here are some recommendations to improve yourself!
         </button>
       </div>
 
@@ -100,7 +95,7 @@ function Results() {
             ))}
           </div>
           <div className="center">
-            <button className=' recButton' onClick={handleClose} >
+            <button className='recButton' onClick={handleClose} >
               Close
             </button>
           </div>
@@ -108,22 +103,53 @@ function Results() {
       </Modal>
 
       <h3>Question Results</h3>
-      {questions.map((questionData) => {
-        const userScore = scores[questionData.id]; // Get the user's score for the question
-        const isCorrect = userScore === 1; // Check if the user got the question correct
-
+      {newdata.questions && newdata.questions.map((questionData) => {
+        const userAnswer = questionData.userAnswer;
+        const correctAnswer = questionData.correctAnswer;
+        const isCorrect = userAnswer === correctAnswer;
+        
         return (
           <div key={questionData.id} className='questionResult'>
             <div className='questionText'>
-              Q{questionData.id}: {questionData.question}
+              <strong>Q{questionData.id}:</strong> {questionData.question}
             </div>
-            <div className='correctAnswer'>
-              <strong>Correct answer:</strong> {questionData.answer}
+            
+            {/* Show options if available */}
+            {questionData.options && (
+              <div className='questionOptions'>
+                <strong>Options:</strong>
+                <ul>
+                  {Object.entries(questionData.options[0] || {}).map(([key, value]) => (
+                    <li key={key} className={`
+                      ${userAnswer === key ? 'userSelected' : ''}
+                      ${correctAnswer === key ? 'correctOption' : ''}
+                    `}>
+                      {key}: {value}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            <div className='answerComparison'>
+              <div className='correctAnswer'>
+                <strong>Correct answer:</strong> {correctAnswer}
+              </div>
+              <div className='userAnswer'>
+                <strong>Your answer:</strong> {userAnswer || 'Not answered'}
+              </div>
             </div>
+            
+            {questionData.explanation && (
+              <div className='explanation'>
+                <strong>Explanation:</strong> {questionData.explanation}
+              </div>
+            )}
+            
             <div className='userScore'>
-              Score: {userScore}{' '}
+              <strong>Result:</strong> {isCorrect ? 'Correct' : 'Incorrect'}{' '}
               {isCorrect ? (
-                <span style={{ color: 'light-green' }}>
+                <span style={{ color: 'green' }}>
                   <CheckIcon fontSize='medium' />
                 </span>
               ) : (

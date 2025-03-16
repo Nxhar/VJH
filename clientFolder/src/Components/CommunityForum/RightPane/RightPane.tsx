@@ -1,207 +1,153 @@
-import {useState, useRef} from 'react'
-import './rightpane.css'
+import { useState, useRef, useEffect } from 'react';
+import './rightpane.css';
 import SendIcon from '@mui/icons-material/Send';
-import ChatbotIcon from '../../../Assets/chatboticon.png'
+import ChatbotIcon from '../../../Assets/chatboticon.png';
 import { SyncLoader } from 'react-spinners';
-
 import { User } from 'firebase/auth';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-
-function RightPane({user, context}: { user: User | null, context: string }) {
-
-  const [message, setMessage] = useState('')
+function RightPane({ user, context }: { user: User | null, context: string }) {
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     {
-      'type' : 'aiMessage',
-      'content': "Hi! I'm Gyaanvapi, an AI assistant to help your needs. You can ask me anything you like!"
+      type: 'aiMessage',
+      content: "Hi! I'm Gyaanvapi, an AI assistant to help your needs. You can ask me anything you like!"
     }
-  ])
- 
-
-  // For checking if atleast one message is present
-  // const [anyMessages, setAnyMessages] = useState(false)
-  const userIcon = user ? user.photoURL : ''
-
-  const [loadingResponse, setLoadingResponse] = useState(false)
-
+  ]);
+  const userIcon = user ? user.photoURL : '';
+  const [loadingResponse, setLoadingResponse] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [genAI, setGenAI] = useState<GoogleGenerativeAI | null>(null);
 
-  
+  useEffect(() => {
+    const initializeGemini = async () => {
+      try {
+        const genAIInstance = new GoogleGenerativeAI('AIzaSyAULeneZJyL7D6Jsy9WUNS3_auYnZU0BWM');
+        setGenAI(genAIInstance);
+      } catch (error) {
+        console.error("Gemini initialization error", error);
+      }
+    };
+    initializeGemini();
+  }, []);
 
-
-  // ---------- FETCHING RESPONSE FROM BACKEND ----------------
-
-  const fetchResponse = async (prompt_template: string) => {
-    let response = '';
-    
-    let prev_text = prompt_template;
-    let generated_text = '';
-    let resp;
-  
+  const fetchGeminiResponse = async (prompt: string) => {
     try {
-      while (!generated_text.includes('</end>')) {
-        const res = await fetch(
-          'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1',
-          {
-            headers: {
-              Authorization: 'Bearer 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',
-              'Content-Type': 'application/json', // Add this line to set the content type
-            },
-            method: 'POST',
-            body: JSON.stringify({ inputs: prev_text }), // Correct the structure of the payload
-          }
-        );
+      const response = await fetch('http://localhost:5000/api/gemini', { // URL of your Express server
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt }),
+      });
   
-        resp = await res.json();
-        generated_text = resp[0]['generated_text'].split(prev_text)[1];
-        prev_text += generated_text;
-  
-        console.log(generated_text); // Log the generated text for debugging
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Gemini API Error: ${response.status} - ${errorData.error}`);
       }
   
-      response = resp[0]['generated_text'].split(prompt_template)[1];
+      const data = await response.json();
+      return data.response;
   
-      // After finishing fetching -
-      setLoadingResponse(false); // Commented out because setLoadingResponse is not defined
-      response = await response.split('</end>')[0]
-      return response;
-    } catch (err) {
-      console.error(err);
-      return '';
+    } catch (error) {
+      console.error("Error fetching from Gemini API:", error);
+      return "Error communicating with Gemini API.";
     }
   };
 
-  
-
   const handlePostChatMessage = async () => {
-
-    
-    if(message.trim() == ''){
-      return ;
+    if (message.trim() === '') {
+      return;
     }
 
     const updatedMessages = [...messages, {
-      'type':'userMessage',
-      'content':message,
-    }]
+      type: 'userMessage',
+      content: message,
+    }];
 
-    setMessages(updatedMessages)
-    setMessage('')
+    setMessages(updatedMessages);
+    setMessage('');
 
-    if(ref.current){
+    if (ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
-    
 
-    // Logic to handle Post Request 
-    setLoadingResponse(true)
+    setLoadingResponse(true);
 
-    const prompt_template = `
-      You are Gyaanvapi, an AI assistant that truthfully answers queries in 100 words.
-      You must end each answer with the characters </end> 
-      Question : ${message}
-      Answer : 
-    `;
+    const prompt = `You are Gyaanvapi, an AI assistant that truthfully answers queries in 100 words.  Question : ${message} Answer : `;
 
-    const response = await fetchResponse(prompt_template)
+    const response = await fetchGeminiResponse(prompt);
 
     const newUpdatedMessages = [...updatedMessages, {
-      'type':'aiMessage',
-      'content':response
-    }]
+      type: 'aiMessage',
+      content: response
+    }];
 
-    setMessages(newUpdatedMessages)
-    
-    if(ref.current){
+    setMessages(newUpdatedMessages);
+
+    if (ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
-
-  }
-  
-  // const prompt_template = `
-  //    You are an AI assistant that speaks about a certain discussion and answers the queries in the discussion if any in 100 words.
-  //    You must end each answer with the characters </end> 
-  //    Discussion : ${context}
-  //    Answer:
-  // `;  
+    setLoadingResponse(false);
+  };
 
   const handlePostContext = async () => {
-    console.log(context)
-    
-    const prompt_template = `
-       You are Gyaanvapi, an AI assistant that speaks about a certain discussion and answers the queries in the discussion if any in 100 words.
-       You must end each answer with the characters </end> 
-       Discussion : ${context}
-       Answer:
-    `;  
-    setLoadingResponse(true)
+    console.log(context);
 
-    const response = await fetchResponse(prompt_template)
+    const prompt = `You are Gyaanvapi, an AI assistant that speaks about a certain discussion and answers the queries in the discussion if any in 100 words. Discussion : ${context} Answer:;`
+    setLoadingResponse(true);
+
+    const response = await fetchGeminiResponse(prompt);
 
     const newUpdatedMessages = [...messages, {
-      'type':'aiMessage',
-      'content':response
-    }]
+      type: 'aiMessage',
+      content: response
+    }];
 
-    setMessages(newUpdatedMessages)
-    
-    if(ref.current){
+    setMessages(newUpdatedMessages);
+
+    if (ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
+    setLoadingResponse(false);
+  };
 
-
-    
-  }
-  
   return (
     <>
-    <div className="outerRightLayer">
-      <div className="title">
-        <h2>Chat with Gyaanvapi   </h2>
-      </div>
-      <div className="Messages" id='Messages'>
-
-        <div className="auto"></div>
-
-        {/* Static Messages for NOW */}
-
-        {
-          messages.map( (message, index) => (
+      <div className="outerRightLayer">
+        <div className="title">
+          <h2>Chat with Gyaanvapi   </h2>
+        </div>
+        <div className="Messages" id='Messages'>
+          <div className="auto"></div>
+          {messages.map((message, index) => (
             <div key={index} className={message['type']}>
-              <img src={message['type'] === 'aiMessage'? ChatbotIcon : userIcon} alt="UI" className="chat-user-icon" />
+              <img src={message['type'] === 'aiMessage' ? ChatbotIcon : userIcon} alt="UI" className="chat-user-icon" />
               <div className="messageText">{message['content']}</div>
             </div>
-          ))
-        }
+          ))}
 
-        {
-          loadingResponse ? 
-          <div className="aiMessage">
-            <img src={ChatbotIcon} alt="" className="chat-user-icon" />
-            <SyncLoader style={{marginLeft:'10px'}} color='#9b51e0' size={10} margin={5} speedMultiplier={0.5}/>
-          </div> : <> </>
-        }
+          {loadingResponse ?
+            <div className="aiMessage">
+              <img src={ChatbotIcon} alt="" className="chat-user-icon" />
+              <SyncLoader style={{ marginLeft: '10px' }} color='#9b51e0' size={10} margin={5} speedMultiplier={0.5} />
+            </div> : <></>
+          }
 
-      <div className="bottomOfTheContent" ref={ref}></div>
+          <div className="bottomOfTheContent" ref={ref}></div>
+        </div>
 
-         {/* End of MESSAGES DIV  */}
+        <div className="bottomRightLayer" onSubmit={async (e) => { e.preventDefault(); await handlePostChatMessage(); }}>
+          <form className="bottomInputBox">
+            <input type="text" className='textbox' value={message} onChange={(e) => { setMessage(e.target.value) }} placeholder='Ask the AI anything' />
+            <SendIcon className='btn' onClick={handlePostChatMessage} />
+          </form>
+
+          {context !== '' && (<div className='getInsights' onClick={handlePostContext}>Get Insights on the Post</div>)}
+        </div>
       </div>
-
-      <div className="bottomRightLayer" onSubmit={ async (e)=> {e.preventDefault(); await handlePostChatMessage() }}>
-        <form className="bottomInputBox">
-          <input type="text" className='textbox' value={message} onChange={(e)=>{setMessage(e.target.value)}} placeholder='Ask the AI anything' />
-          <SendIcon className='btn' onClick={handlePostChatMessage}/>
-        </form>
-
-        {context!=='' && (<div className='getInsights' onClick={handlePostContext}>Get Insights on the Post</div>)}
-
-        
-      </div>
-    </div>
-    
-
     </>
-  )
+  );
 }
 
-export default RightPane
+export default RightPane;

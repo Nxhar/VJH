@@ -12,8 +12,10 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@google/generative-ai": "^0.21.0",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
+    "axios": "^1.8.2",
     "firebase": "^10.6.0",
     "lamejs": "^1.2.1",
     "mic-recorder-to-mp3": "^2.2.2",
